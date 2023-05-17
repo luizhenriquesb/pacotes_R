@@ -1,20 +1,7 @@
-# R
-
-setwd("C:\\Users\\luizh\\Documents\\R\\ObservaSampa")
-getwd()
-
-dados_net <- read.csv("https://dados-abertos-observasampa.prefeitura.sp.gov.br/_temp/DadosAbertos/ObservaSampaDadosAbertosVariaveisCSV.csv", sep = ";")
-dados_net %>% 
-  glimpse()
-
-dados <- read.csv("observa_sampa_variaveis_csv.csv", sep = ";")
-dados %>% 
-  glimpse() 
-
-# DPLYR
-
+# Principais funções do pacote dplyr
 library(dplyr)
 
+# DPLYR
 # Funções que lidam com LINHAS 
 
 # 1. dplyr::filter() 
@@ -22,22 +9,14 @@ library(dplyr)
 
 starwars %>% 
   filter(species == "Droid")
-
-dados2 %>% 
-  filter(Região == "Lajeado (Distrito)") %>% 
-  glimpse()
-
+  
 # 2. dplyr::slice() 
 # Seleciona uma linha dado um valor numérico
 
 starwars %>% 
   slice(1:10)
 
-dados2 %>% 
-  slice(1:10)
-
 # 3. dplyr::arrange() 
-
 # Ordena as linhas do dataset dado uma coluna
 
 dplyr::arrange(starwars, height) # Ordena por altura
@@ -52,7 +31,6 @@ starwars %>%
 starwars %>% 
   arrange(desc(mass))
 
-
 # Funções que lidam com COLUNAS 
 
 # 1. dplyr::pull() 
@@ -65,16 +43,11 @@ starwars %>%
 starwars %>% 
   pull(name = name)
 
-dados_net %>% 
-  pull(Período) %>% 
-  table()
-
 # 2. dplyr::select() 
 # Seleciona colunas de um dataset
 
 starwars %>% 
   select(name, mass)
-
 
 # 3. dplyr::rename() 
 # Renomeia as colinas
@@ -86,17 +59,8 @@ starwars %>%
          cabelo = hair_color,
          cor_da_pele = skin_color)
 
-dados_net <- dados_net %>% 
-  rename(variavel = Nome,
-         regiao = Região,
-         ano = Período,
-         casos = Resultado)
-
-
 # 4. dplyr::mutate() 
 # Cria e altera colunas
-
-# Exemplo
 
 starwars_resumido <- select(starwars,
                             name, height, species)
@@ -104,13 +68,8 @@ starwars_resumido <- select(starwars,
 # Recodificando as alturas em alto e baixo e as espécies em alienígenas e humanos
 
 starwars_resumido %>% 
-  mutate(altura_recodificada = ifelse(height > 180, "alto", "baixo")) %>% 
-  mutate(alienigena = ifelse(species %in% c("Human", "Droid"), "alienigena", "humano"))
-
-starwars_resumido %>% 
   mutate(altura_recodificada = ifelse(height > 180, "alto", "baixo"),
          alienigena = ifelse(species %in% c("Human"), "humano", "alienigena"))
-
 
 # 5. dplyr::recode() 
 # O ifelse() permite apenas recodificar em duas dimensões. A função recode()
@@ -136,7 +95,6 @@ starwars %>%
                                          height >= 166 & height <= 179 ~ "mediana",
                                          height >= 180 & height <= 199 ~ "alta",
                                          height >= 200 ~"altissima"))
-
 
 # 7. dplyr::relocate() 
 # Permite reordenar a posição das colunas
